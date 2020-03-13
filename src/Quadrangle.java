@@ -4,27 +4,39 @@ public class Quadrangle {
     private Point rightBottom;
     private Point rightTop;
 
-    Quadrangle(Point leftBottom, Point leftTop, Point rightBottom, Point rightTop) {
+    public Quadrangle(Point leftBottom, Point leftTop, Point rightBottom, Point rightTop) {
         this.leftBottom = leftBottom;
         this.leftTop = leftTop;
         this.rightBottom = rightBottom;
         this.rightTop = rightTop;
     }
 
-    boolean isRectangular() {
-        double THRESHOLD = 0.0001;
+    /**
+     * If a quadrangle has two pairs of equal opposite sides and its diagonals are also equal, this is a rectangle.
+     *
+     * @return true if quadrangle is a rectangle
+     */
+    public boolean isRectangular() {
+        final double THRESHOLD = 0.0001;
 
-        boolean isVerticalSidesEqual = Math.abs(getLength(leftBottom, leftTop) -
+        final boolean isVerticalSidesEqual = Math.abs(getLength(leftBottom, leftTop) -
                 getLength(rightBottom, rightTop)) < THRESHOLD;
-        boolean isHorizontalSidesEqual = Math.abs(getLength(leftBottom, rightBottom) -
+        final boolean isHorizontalSidesEqual = Math.abs(getLength(leftBottom, rightBottom) -
                 getLength(leftTop, rightTop)) < THRESHOLD;
-        boolean isDiagonalsEqual = Math.abs(getLength(leftBottom, rightTop) -
+        final boolean isDiagonalsEqual = Math.abs(getLength(leftBottom, rightTop) -
                 getLength(leftTop, rightBottom)) < THRESHOLD;
 
         return isVerticalSidesEqual && isHorizontalSidesEqual && isDiagonalsEqual;
     }
 
-    private double getLength(Point startPoint, Point endPoint) {
+    /**
+     * Calculating the length of the line using the Pythagorean theorem
+     *
+     * @param startPoint start point
+     * @param endPoint   end point
+     * @return the length of the line
+     */
+    private double getLength(final Point startPoint, final Point endPoint) {
         return Math.sqrt(Math.pow(Math.abs(startPoint.getX() - endPoint.getX()), 2) +
                 Math.pow(Math.abs(startPoint.getY() - endPoint.getY()), 2));
     }
@@ -35,7 +47,7 @@ public class Quadrangle {
                 rightTop.toString() + ", " + rightBottom.toString() + "}";
     }
 
-    void print() {
+    public void print() {
         System.out.println(this.toString());
     }
 }

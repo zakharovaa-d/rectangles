@@ -1,83 +1,67 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Main {
-    private static List<Quadrangle> quadrangles;
     private static List<Point> points;
+    private static List<Quadrangle> quadrangles;
 
     public static void main(String[] args) {
+        readPoints();
+        generateAllPossibleQuadrangles();
+        findRectangles();
+    }
 
-        // no rectangulars
-//        Point a = new Point(3,4);
-//        Point b = new Point(5,6);
-//        Point c = new Point(8,5);
-//        Point d = new Point(9,3);
-//        Point e = new Point(7,1);
-//        Point f = new Point(3,1);
-
-        // 1 rectangular
-//        Point a = new Point(2,3);
-//        Point b = new Point(5,6);
-//        Point c = new Point(7,4);
-//        Point d = new Point(4,1);
-//        Point e = new Point(1,6);
-//        Point f = new Point(7,6);
-
-        // 2 rectangulars
-        Point a = new Point(-7,4);
-        Point b = new Point(-1,1);
-        Point c = new Point(1,1);
-        Point d = new Point(-1,-1);
-        Point e = new Point(1,-1);
-        Point f = new Point(0,4);
-        Point g = new Point(2,8);
-        Point k = new Point(6,8);
-        Point l = new Point(8,5);
-        Point m = new Point(11,5);
-        Point n = new Point(6,1);
-
-
+    private static void readPoints() {
         points = new ArrayList<>();
-        points.add(a);
-        points.add(b);
-        points.add(c);
-        points.add(d);
-        points.add(e);
-        points.add(f);
-        points.add(g);
-        points.add(l);
-        points.add(m);
-        points.add(n);
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Input the number of points:");
+        int length = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("Points: ");
-        for (Point point: points) {
-            point.print();
+        System.out.println("Input x and y coordinates for each point separated by space\n");
+        for (int i = 0; i < length; i++) {
+            System.out.println("Input x and y for point " + (i + 1) + ":");
+            String line = scanner.nextLine();
+            String[] arr = line.split(" ");
+            int x = Integer.parseInt(arr[0]);
+            int y = Integer.parseInt(arr[1]);
+            Point enteredPoint = new Point(x, y);
+            points.add(enteredPoint);
         }
 
-        generateAllPossibleQuadrangles();
-        List<Quadrangle> rectangles = new ArrayList<>();
-        rectangles = quadrangles.stream().filter(Quadrangle::isRectangular).collect(Collectors.toList());
-
-        rectangles.forEach(System.out::println);
-        System.out.println("Rectangles count: " + rectangles.size());
+        System.out.println("Points: ");
+        points.forEach(Point::print);
+        System.out.println("Points count: " + points.size());
     }
 
     private static void generateAllPossibleQuadrangles() {
         quadrangles = new ArrayList<>();
 
-        for (int i = 0; i < points.size() - 3; i++) {
-            for (int j = i + 1; j < points.size() - 2; j++) {
-                for (int k = j + 1; k < points.size() - 1; k++) {
-                    for (int m = k + 1; m < points.size(); m++) {
-                        quadrangles.add(new Quadrangle(points.get(i), points.get(j), points.get(k), points.get(m)));
+        if (points.size() >= 4) {
+            for (int i = 0; i < points.size() - 3; i++) {
+                for (int j = i + 1; j < points.size() - 2; j++) {
+                    for (int k = j + 1; k < points.size() - 1; k++) {
+                        for (int m = k + 1; m < points.size(); m++) {
+                            quadrangles.add(new Quadrangle(points.get(i), points.get(j), points.get(k), points.get(m)));
+                        }
                     }
                 }
             }
         }
 
+        System.out.println("Quadrangles: ");
         quadrangles.forEach(Quadrangle::print);
-        System.out.println(quadrangles.size());
+        System.out.println("Quadrangles count: " + quadrangles.size());
+    }
+
+    private static void findRectangles() {
+        List<Quadrangle> rectangles = quadrangles.stream()
+                .filter(Quadrangle::isRectangular).collect(Collectors.toList());
+
+        System.out.println("Rectangles: ");
+        rectangles.forEach(System.out::println);
+        System.out.println("Rectangles count: " + rectangles.size());
     }
 }
